@@ -1,2 +1,2 @@
-A mensagem descriptografada (Huffman) é Lfgwnjq%Qzhfx%ij%Xtzxf%Utwyjqf
-A mensagem totalmente descriptografada (Huffman+Cesar) é: Gabriel Lucas de Sousa Portela
+A mensagem descriptografada (Huffman) é CCCCCCHHHHHHHHuuuuuuuuuuuuccccccccccccuuuuuuuuuuueeeeeeeeee
+A mensagem totalmente descriptografada (Huffman+Cesar) é: AAAAAAFFFFFFFFssssssssssssaaaaaaaaaaaassssssssssscccccccccc

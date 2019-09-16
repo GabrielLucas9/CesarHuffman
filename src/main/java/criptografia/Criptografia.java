@@ -1,6 +1,7 @@
 package criptografia;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
@@ -12,9 +13,11 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 class HuffmanNode implements Comparable<HuffmanNode> {
+
     int frequency;
     char data;
     HuffmanNode left, right;
+
     @Override
     public int compareTo(HuffmanNode node) {
         return frequency - node.frequency;
@@ -22,8 +25,10 @@ class HuffmanNode implements Comparable<HuffmanNode> {
 }
 
 public class Criptografia {
+
     private static final Map<Character, String> charPrefixHashMap = new HashMap<>();
     static HuffmanNode root;
+
     private static HuffmanNode buildTree(Map<Character, Integer> freq) {
         PriorityQueue<HuffmanNode> priorityQueue = new PriorityQueue<>();
         Set<Character> keySet = freq.keySet();
@@ -71,24 +76,27 @@ public class Criptografia {
     }
 
     private static String encode(String test, PrintWriter gravararvo) {
+
         Map<Character, Integer> freq = new HashMap<>();
+
         for (int i = 0; i < test.length(); i++) {
             if (!freq.containsKey(test.charAt(i))) {
                 freq.put(test.charAt(i), 0);
             }
             freq.put(test.charAt(i), freq.get(test.charAt(i)) + 1);
         }
-        
+
         gravararvo.println("Character Frequency Map = " + freq);
         System.out.println("Character Frequency Map = " + freq);
-        
+
         root = buildTree(freq);
         setPrefixCodes(root, new StringBuilder());
-        
+
         gravararvo.println("Character Prefix Map = " + charPrefixHashMap);
         System.out.println("Character Prefix Map = " + charPrefixHashMap);
-      
+
         StringBuilder s = new StringBuilder();
+
         for (int i = 0; i < test.length(); i++) {
             char c = test.charAt(i);
             s.append(charPrefixHashMap.get(c));
@@ -120,13 +128,13 @@ public class Criptografia {
         String mensagem = stringBuilder.toString();
         descriptografado.println("A mensagem descriptografada (Huffman) é " + mensagem);
         System.out.println("A mensagem descriptografada (Huffman) é " + mensagem);
-        
-        char [] men = mensagem.toCharArray();
-        
+
+        char[] men = mensagem.toCharArray();
+
         System.out.printf("A mensagem totalmente descriptografada (Huffman+Cesar) é: ");
         descriptografado.printf("A mensagem totalmente descriptografada (Huffman+Cesar) é: ");
-        
-        for(int i = 0; i < mensagem.length(); i++){
+
+        for (int i = 0; i < mensagem.length(); i++) {
             men[i] = (char) (men[i] - n);
             descriptografado.printf("%c", men[i]);
             System.out.printf("%c", men[i]);
@@ -138,6 +146,8 @@ public class Criptografia {
         Scanner ler = new Scanner(System.in);
         String nome = "Texto.txt";
         int n = 0;
+        float texto = 0;
+        float textoHuff = 0;
         try {
             FileReader arq = new FileReader(nome);
             BufferedReader lerArq = new BufferedReader(arq);
@@ -160,6 +170,7 @@ public class Criptografia {
                 }
                 gravarArq.println(novalinha);
                 System.out.printf("%s\n", novalinha);
+                texto = linha.length();
                 linha = lerArq.readLine();
             }
             arq.close();
@@ -172,46 +183,54 @@ public class Criptografia {
         try {
             FileReader arq = new FileReader(nome);
             BufferedReader lerArq = new BufferedReader(arq);
-            
+
             FileWriter arqcripto = new FileWriter("C:\\Users\\gabri\\OneDrive\\Documentos\\NetBeansProjects\\Criptografia\\CriptografadoHuffman.txt");
             PrintWriter gravarArq = new PrintWriter(arqcripto);
-            
+
             String linha = lerArq.readLine();
             System.out.println("Executando a criptografia de Huffman:");
             System.out.println("...");
-            
+
             String test = "";
-            
+
             while (linha != null) {
                 test += linha;
                 linha = lerArq.readLine();
             }
-            
+
             FileWriter arqarvo = new FileWriter("C:\\Users\\gabri\\OneDrive\\Documentos\\NetBeansProjects\\Criptografia\\ArvoreHuffman.txt");
             PrintWriter gravararvo = new PrintWriter(arqarvo);
-            
+
             gravararvo.printf("Cesar: %d", n);
             gravararvo.println("");
-            
+
             String s = encode(test, gravararvo);
-            gravarArq.println(s);
             
+            textoHuff = s.length();
+            
+            //char [] lol = s.toCharArray();
+            gravarArq.println(s);
+
+            /*for(int i = 0; i < s.length(); i++){
+                gravarArq.printf("%d", (int)(lol[i] - '0'));
+                System.out.printf("%d", (int)(lol[i] - '0'));
+            }*/
             FileWriter arqdescripto = new FileWriter("C:\\Users\\gabri\\OneDrive\\Documentos\\NetBeansProjects\\Criptografia\\Descriptografado.txt");
             PrintWriter descriptografado = new PrintWriter(arqdescripto);
-            
+
             //System.out.println(s);
-            
             decode(s, descriptografado, n);
-            
+
             arq.close();
             arqarvo.close();
             arqcripto.close();
             descriptografado.close();
-            
+
         } catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",
                     e.getMessage());
         }
         System.out.println();
+        System.out.printf("A eficiência de redução de: %.2f por centos", (1 - textoHuff/(texto*16))*100);
     }
 }
